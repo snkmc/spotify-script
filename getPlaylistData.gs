@@ -1,7 +1,10 @@
-var client_info = '***'//←Spotify APIのクライアント情報
+var clientID = '***'//←Spotify APIのClient ID
+var clientSecret = '***'//←Spotify APIのClient Secret
+
 var playlistID = '***'//←SpotifyプレイリストのIDを入れる
 
-function getPlaylistData() { //←SpotifyのAPIをコールし、プレイリスト曲楽曲一覧を抽出
+
+function getPlaylistData() { //SpotifyのAPIをコールし、プレイリスト内の楽曲情報を入手
   
   var url = "https://api.spotify.com/v1/playlists/" + playlistID + "/tracks";
   var headers = {
@@ -33,7 +36,9 @@ function getPlaylistData() { //←SpotifyのAPIをコールし、プレイリス
   Logger.log(playlistData);
 }
 
-function getAccessToken() { //←SpotifyAPIをコールし、アクセストークンを入手
+function getAccessToken() { //SpotifyAPIをコールし、アクセストークンを入手
+  var client_info = Utilities.base64Encode(clientID + ":" + clientSecret); 
+
   var url = "https://accounts.spotify.com/api/token";
   var headers = {
     "Content-Type" : "application/x-www-form-urlencoded;",
