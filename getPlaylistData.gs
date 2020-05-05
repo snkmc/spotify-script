@@ -1,18 +1,9 @@
-//初期設定
-var client_id = '{"Client ID"}'//←Spotify APIのClient ID
-var client_secret = '{"Client Secret"}'//←Spotify APIのClient Secret
-
-var playlist_id = '{"Playlist ID"}'//←SpotifyプレイリストのIDを入れる
-
-var spreadsheetId = '{"Google Spreadsheet ID"}'//←スプレッドシートのIDを入れる
-
-
 //getPlaylistData() : SpotifyのAPIをコールし、プレイリスト内の楽曲情報を入手
-function getPlaylistData() {
-  var url = "https://api.spotify.com/v1/playlists/" + playlist_id;
+function getPlaylistData(plid) {
+  var url = "https://api.spotify.com/v1/playlists/" + plid;
   var headers = {
     "Content-Type" : "application/json;",
-    'Authorization': 'Bearer ' + getAccessToken(),
+    'Authorization': 'Bearer ' + getAccessToken(client_id, client_secret),
   };
 
   var postData = {
@@ -41,34 +32,6 @@ function getPlaylistData() {
   
   insertArray(playlistdata);//←Spotifyプレイリストから抽出したデータをGoogle Spreadsheetに書き出し
 
-}
-
-
-//ggetAccessToken() : SpotifyAPIをコールし、アクセストークンを入手
-function getAccessToken() {
-  var client_info = Utilities.base64Encode(client_id + ":" + client_secret); 
-
-  var url = "https://accounts.spotify.com/api/token";
-  var headers = {
-    "Content-Type" : "application/x-www-form-urlencoded;",
-    'Authorization': 'Basic ' + client_info,
-  };
-
-  var postData = {
-
-  };
-
-  var options = {
-    "method" : "post",
-    "headers" : headers,
-    "payload" : {
-      'grant_type': 'client_credentials'
-     }
-  };
-
-  var authData = JSON.parse(UrlFetchApp.fetch(url, options));
-  return authData["access_token"];
-  
 }
 
 
